@@ -8,8 +8,10 @@ import (
 )
 
 type Client struct {
-	Id     string `json:"client_id"`
-	Secret string `json:"client_secret"`
+	Id     string `json:"client_id,omitempty"`
+	Secret string `json:"client_secret,omitempty"`
+	Code   string `json:"code,omitempty"`
+	Token  *Token `json:"token,omitempty"`
 }
 
 // String fulfills the Stringer interface as JSON
@@ -42,6 +44,9 @@ func LoadClient(app string) *Client {
 	if err != nil {
 		log.Print(err)
 		return nil
+	}
+	if HaveToken(app) {
+		c.Token = LoadToken(app)
 	}
 	return c
 }
