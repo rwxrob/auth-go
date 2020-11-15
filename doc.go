@@ -10,6 +10,10 @@ The package comes with an oauth utility command as well that can be
 integrated into shell scripts easily for prototyping and the like before
 the decision to port to a more substantial language later.
 
+Design Considerations
+
+* Functional paradigm whenever possible
+
 See Also
 
 * https://tools.ietf.org/html/rfc6749

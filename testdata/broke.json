@@ -1,7 +1,10 @@
 {
+  "client_id": "some_client_id",
+  "client_secret": "some_client_secret",
   "access_token": "7e61c8a5e2f99404730c511de6580412e618da35",
   "expires": 1520280099,
   "expires_in": 3600,
   "refresh_token": "0e633c3343a2df84b1526f4c2e6993ff17e05cab",
   "scope": "profile.default.read channels.default.read chat.default.read stream.default.read",
   "token_type": "Bearer"
+

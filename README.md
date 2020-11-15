@@ -7,3 +7,9 @@
 Designed to help make command line Oauth2 easier to implement.
 
 Always tweaking on it, but it works.
+
+## TODO
+
+* `StartTempServer(port)`
+* Better host os detection for opening local graphic browser
+* Allow default local server templates to be customized in `OAUTHDIR`
