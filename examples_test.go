@@ -21,7 +21,7 @@ func ExampleSave() {
 	fmt.Println(string(data))
 	// Output:
 	// {
-	//   "app_name": "random",
+	//   "name": "random",
 	//   "client_id": "random_client_id",
 	//   "client_secret": "random_client_secret"
 	// }
@@ -41,13 +41,14 @@ func ExampleCache() {
 	oauth.Load("random").Print()
 	// Output:
 	// {
-	//   "app_name": "random",
+	//   "name": "random",
 	//   "client_id": "random_client_id",
 	//   "client_secret": "random_client_secret"
 	// }
 }
 
 func ExampleLoad() {
+	defer os.Setenv("OAUTHDIR", os.Getenv("OAUTHDIR"))
 	os.Setenv("OAUTHDIR", "testdata")
 	client := oauth.Load("some.io")
 	client.Print()
@@ -70,9 +71,48 @@ func ExampleLoad() {
 	// null
 }
 
+func ExampleParse() {
+	defer os.Setenv("OAUTHDIR", os.Getenv("OAUTHDIR"))
+	os.Setenv("OAUTHDIR", "testdata")
+	data, _ := ioutil.ReadFile("testdata/save.json")
+	app := oauth.Parse(data)
+	app.Print()
+
+	// Output:
+	// 	{
+	//   "name": "random",
+	//   "client_id": "random_client_id",
+	//   "client_secret": "random_client_secret"
+	// }
+}
+
 func ExampleHave() {
+	defer os.Setenv("OAUTHDIR", os.Getenv("OAUTHDIR"))
+	os.Setenv("OAUTHDIR", "testdata")
 	fmt.Println(oauth.Have("some.io"))
 	fmt.Println(oauth.Have("nope"))
+	// Output:
+	// true
+	// false
+}
+
+func ExampleAppData_SetExpires() {
+	d := new(oauth.AppData)
+	fmt.Println(d.Expires > 0)
+	d.SetExpires()
+	//d.Print()
+	fmt.Println(d.Expires > 0)
+	// Output:
+	// false
+	// true
+}
+
+func ExampleAppData_SetState() {
+	d := new(oauth.AppData)
+	fmt.Println(d.State == "")
+	d.SetState()
+	//d.Print()
+	fmt.Println(d.State == "")
 	// Output:
 	// true
 	// false
