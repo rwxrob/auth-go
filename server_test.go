@@ -1,6 +1,7 @@
 package oauth
 
-import "testing"
+/*
+// uncomment to test the server
 
 func TestStartServer(t *testing.T) {
 	d := new(AppData)
@@ -9,7 +10,7 @@ func TestStartServer(t *testing.T) {
 	StartServer(d, "localhost:8080", com)
 OUT:
 	for {
-		what := <-com
+		what := <-com // blocks
 		switch v := what.(type) {
 		case string:
 			switch v {
@@ -20,3 +21,4 @@ OUT:
 		}
 	}
 }
+*/

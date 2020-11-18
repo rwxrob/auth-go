@@ -67,8 +67,8 @@ func ExampleLoad() {
 	//   "scope": "profile.default.read channels.default.read chat.default.read stream.default.read",
 	//   "token_type": "Bearer"
 	// }
-	// null
-	// null
+	// {}
+	// {}
 }
 
 func ExampleParse() {
@@ -105,6 +105,16 @@ func ExampleAppData_SetExpires() {
 	// Output:
 	// false
 	// true
+}
+
+func ExampleAppData_TimeLeft() {
+	d := new(oauth.AppData)
+	d.ExpiresIn = 3600
+	d.SetExpires()
+	// d.Print()
+	fmt.Println(d.TimeLeft())
+	// Output:
+	// 3600
 }
 
 func ExampleAppData_SetState() {

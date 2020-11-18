@@ -3,12 +3,14 @@ package oauth
 import (
 	"fmt"
 	"io/ioutil"
+	"sync"
 	"time"
 
 	"gitlab.com/rwxrob/uniq"
 )
 
 type AppData struct {
+	sync.RWMutex
 	Name         string `json:"name,omitempty"`
 	ClientId     string `json:"client_id,omitempty"`
 	ClientSecret string `json:"client_secret,omitempty"`
@@ -21,24 +23,35 @@ type AppData struct {
 	Type         string `json:"token_type,omitempty"`
 	State        string `json:"state,omitempty"`
 	LoginURI     string `json:"login_uri,omitempty"`
+	RedirectURI  string `json:"redirect_uri,omitempty"`
 	TokenURI     string `json:"token_uri,omitempty"`
 }
 
 // SetExpires sets the Expires value to the current time plus the
 // ExpiresIn value.
 func (d *AppData) SetExpires() {
+	d.Lock()
+	defer d.Unlock()
 	d.Expires = time.Now().Unix() + d.ExpiresIn
 }
 
 // SetState sets the State to a random base32 string (see
 // gitlab.com/rwxrob/uniq).
-func (d *AppData) SetState() { d.State = uniq.Base32() }
+func (d *AppData) SetState() {
+	d.Lock()
+	defer d.Unlock()
+	d.State = uniq.Base32()
+}
 
 // TimeLeft returns the number of seconds before Expires
 func (d *AppData) TimeLeft() int64 { return d.Expires - time.Now().Unix() }
 
 // String fulfills the Stringer interface as JSON
-func (d AppData) String() string { return toJSON(d) }
+func (d AppData) String() string {
+	d.RLock()
+	defer d.RUnlock()
+	return toJSON(d)
+}
 
 // Print prints in JSON long form.
 func (d *AppData) Print() {
@@ -51,5 +64,7 @@ func (d *AppData) Print() {
 
 // Save writes the JSON long form to the specified path.
 func (d *AppData) Save(path string) error {
+	d.RLock()
+	defer d.RUnlock()
 	return ioutil.WriteFile(path, []byte(toJSON(d)), 0600)
 }

@@ -4,17 +4,31 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os/exec"
 	"time"
 )
 
+const (
+	DefaultLoginURI    = `http://localhost:8080/login`
+	DefaultRedirectURI = `http://localhost:8080/oauth`
+	DefaultTokenURI    = `http://localhost:8080/token`
+)
+
 // Update is the main entry to the oauth authorization flow for an
-// existing cached oauth application.
-func Update(app string) error {
+// existing cached oauth application. The argument passed can either be
+// the unique name from the cached app data or a pointer to an AppData
+// struct.
+func Update(app interface{}) error {
+	var d *AppData
+
+	switch v := app.(type) {
+	case string:
+		d = Load(v)
+	case *AppData:
+		d = v
+	}
 
 	// load the AppData and check for client_id and client_secret
-	d := Load(app)
 	switch {
 	case d == nil:
 		return fmt.Errorf("update: failed to load app data")
@@ -24,14 +38,23 @@ func Update(app string) error {
 		return fmt.Errorf("update: client_secret not set")
 	}
 
-	// if no expires then set
+	//set values to their defaults so it becomes obvious how they can be
+	//updated in the cache files
+	if d.LoginURI == "" {
+		d.LoginURI = DefaultLoginURI
+	}
+	if d.RedirectURI == "" {
+		d.RedirectURI = DefaultRedirectURI
+	}
+	if d.TokenURI == "" {
+		d.TokenURI = DefaultTokenURI
+	}
 	if d.Expires == 0 {
 		d.Expires = time.Now().Unix()
 		Cache(d)
 	}
-
 	// if access_token has more than 10 minutes of life left just return
-	if d.TimeLeft() < 600 {
+	if d.TimeLeft() > 600 {
 		return nil
 	}
 
@@ -49,14 +72,32 @@ func Update(app string) error {
 }
 
 func refresh(d *AppData) error {
+	// TODO
 	fmt.Println("would refresh")
 	return nil
 }
 
 func authorize(d *AppData) error {
-	// TODO start local redirect server that will upgrade code into token
-	// TODO open local browser to login uri
-	fmt.Println("would initialize")
+
+	// set the state and url for this authorization flow
+	d.SetState()
+	u := "%v?response_type=code&client_id=%v&redirect_uri=%v&state=%v"
+	url := fmt.Sprintf(u, d.LoginURI, d.ClientId, d.RedirectURI, d.State)
+
+	// open a local http server to handle the incoming redirect data
+	com := make(chan interface{})
+	// FIXME needs to start *another* server
+	fmt.Println(d)
+	if err := StartServer(d, d.RedirectURI, com); err != nil {
+		return err
+	}
+
+	// fire off the local graphic user browser for them to login
+	OpenLocalBrowser(url)
+
+	// wait around for the right data
+	<-com
+
 	return nil
 }
 
@@ -74,11 +115,7 @@ func Have(name string) bool {
 // Load returns pointer to the application oauth data if it exists or
 // nil otherwise.
 func Load(app string) *AppData {
-	buf, err := ioutil.ReadFile(path(app + ".json"))
-	if err != nil {
-		log.Print(err)
-		return nil
-	}
+	buf, _ := ioutil.ReadFile(path(app + ".json"))
 	return Parse(buf)
 }
 
@@ -86,11 +123,7 @@ func Load(app string) *AppData {
 // pointer to the application oauth data if it exists or nil otherwise.
 func Parse(buf []byte) *AppData {
 	appdata := new(AppData)
-	err := json.Unmarshal(buf, appdata)
-	if err != nil {
-		log.Print(err)
-		return nil
-	}
+	json.Unmarshal(buf, appdata)
 	return appdata
 }
 

@@ -26,9 +26,3 @@ func TestPath(t *testing.T) {
 	}
 
 }
-
-/*
-func TestOpenLocalBrowser(t *testing.T) {
-	OpenLocalBrowser("https://robs.io")
-}
-*/
