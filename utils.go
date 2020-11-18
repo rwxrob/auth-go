@@ -1,4 +1,4 @@
-package oauth
+package auth
 
 import (
 	"encoding/json"
@@ -23,7 +23,7 @@ func exists(path string) bool {
 }
 
 func path(this ...string) string {
-	dir := os.Getenv("OAUTHDIR")
+	dir := os.Getenv("AUTHCACHE")
 	if dir == "" {
 		return ""
 	}
