@@ -4,12 +4,10 @@
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/rwxrob/auth-go)](https://goreportcard.com/report/gitlab.com/rwxrob/auth-go)
 [![Coverage](https://gocover.io/_badge/gitlab.com/rwxrob/auth-go)](https://gocover.io/gitlab.com/rwxrob/auth-go)
 
-Designed to help make command line Oauth2 easier to implement.
-
-Always tweaking on it, but it works.
+Designed to help make command line Oauth2 easier to implement and use
+from shell scripts.
 
 ## TODO
 
-* `StartTempServer(port)`
+* Integrate the main 3-leg Oauth2 flow
 * Better host os detection for opening local graphic browser
-* Allow default local server templates to be customized in `OAUTHDIR`
