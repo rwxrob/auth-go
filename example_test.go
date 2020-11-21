@@ -1,12 +1,16 @@
 package auth_test
 
 import (
+	"os"
+	"testing"
+
 	"gitlab.com/rwxrob/auth"
 	"golang.org/x/oauth2"
 )
 
-func ExampleData_String() {
+func ExampleData() {
 
+	// initializing
 	d := new(auth.Data)
 	d.Name = "sample"
 	d.ClientID = "client_id"
@@ -16,9 +20,24 @@ func ExampleData_String() {
 	d.Endpoint.AuthURL = "https://localhost:8081/oauth/authorize"
 	d.Endpoint.TokenURL = "https://localhost:8081/oauth/token"
 	d.Endpoint.AuthStyle = oauth2.AuthStyleInHeader
-	d.Print() // same as fmt.Println(d)
 
-	// Unordered Output:
+	// AccessToken and RefreshToken are only set from a successful auth
+
+	// saving
+	d.Save("something.json", 0600)
+
+	// loading
+	another := new(auth.Data)
+	another.Load("testdata/something.json")
+}
+
+func ExampleLoad() {
+	os.Setenv(auth.DirEnvVar, "testdata")
+	d := auth.Load("sample")
+	if d != nil {
+		d.Print()
+	}
+	// Output:
 	// {
 	//   "ClientID": "client_id",
 	//   "ClientSecret": "client_secret",
@@ -32,15 +51,24 @@ func ExampleData_String() {
 	//     "some.scope",
 	//     "another.scope"
 	//   ],
+	//   "access_token": "",
+	//   "expiry": "0001-01-01T00:00:00Z",
 	//   "Name": "sample"
 	// }
-
 }
 
-func ExampleData() {
-	d := new(auth.Data)
-	d.Name = "something"
-	d.Save("something.json", 0600)
-	another := new(auth.Data)
-	another.Load("testdata/something.json")
+func ExamplePrompt() {
+	val, err := auth.Prompt("Enter something:")
+	_ = val
+	_ = err
+}
+
+func ExamplePromptSecret() {
+	sec, err := auth.PromptSecret("Enter something secret:")
+	_ = sec
+	_ = err
+}
+
+func TestEnvRestored(t *testing.T) {
+	t.Log(os.Getenv(auth.DirEnvVar))
 }
