@@ -20,7 +20,7 @@ type App struct {
 	Name      string
 	AuthState string
 	AuthCode  string
-	sync.Mutex
+	sync.RWMutex
 	oauth2.Config
 	oauth2.Token
 }
@@ -42,8 +42,17 @@ func (a App) JSON() []byte {
 }
 
 // SetAuthState updates the state to a new unique (base32) string.
-func (a App) SetAuthState() {
+func (a *App) SetAuthState() {
+	defer a.Unlock()
+	a.Lock()
 	a.AuthState = uniq.Base32()
+}
+
+// SetAuthCode updates the AuthCode safely.
+func (a *App) SetAuthCode(code string) {
+	defer a.Unlock()
+	a.Lock()
+	a.AuthCode = code
 }
 
 // ParseRedirectURI calls ParseRequestURI on RedirectURI.

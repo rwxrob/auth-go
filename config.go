@@ -32,15 +32,15 @@ func (c Config) JSON() []byte {
 // config.json. If the AUTHCONF environment variable is set will save to
 // that file instead.
 func (c Config) Save() error {
-	return ioutil.WriteFile(ConfigFile(), []byte(c.String()), 0600)
+	return ioutil.WriteFile(ConfigFilePath(), []byte(c.String()), 0600)
 }
 
 // Parse is simply a wrapper for json.Unmarshal().
 func (c *Config) Parse(buf []byte) error { return json.Unmarshal(buf, c) }
 
-// Load loads the JSON data from the ConfigFile path.
+// Load loads the JSON data from the ConfigFilePath path.
 func (c *Config) Load() error {
-	buf, err := ioutil.ReadFile(ConfigFile())
+	buf, err := ioutil.ReadFile(ConfigFilePath())
 	if err != nil {
 		return err
 	}

@@ -28,7 +28,7 @@ func init() {
 			return err
 		}
 		if a, found := c[args[0]]; found {
-			err := a.Authorize()
+			err := auth.Authorize(a)
 			if err != nil {
 				return err
 			}

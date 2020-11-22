@@ -24,10 +24,10 @@ func LoadConfig() (Config, error) {
 	return *c, nil
 }
 
-// ConfigFile returns the path to the configuration file. First the
+// ConfigFilePath returns the path to the configuration file. First the
 // AUTHCONF env var is checked and if not found the os.UserConfigDir
 // will be checked for an auth/config.json file.
-func ConfigFile() string {
+func ConfigFilePath() string {
 	file := os.Getenv("AUTHCONF")
 	if file == "" {
 		dir, err := os.UserConfigDir()
@@ -96,27 +96,25 @@ func Authorize(a *App) error {
 	}
 
 	// start server and send app to it for caching
-	err := StartLocalServer()
-	if err != nil {
-		return err
-	}
-	a.SetAuthState()
-	ServerChan <- a
+	AddSession(a)
+	StartLocalServer()
 
 	// open the user's web browser or prompt for auth code
-	fmt.Print("Attempting to open your web browser ... ")
+	fmt.Println("Attempting to open your web browser")
 	url := a.AuthCodeURL(a.AuthState, oauth2.AccessTypeOffline)
-	err = OpenBrowser(url)
+	err := OpenBrowser(url)
 	if err != nil {
-		fmt.Println("FAILED")
 		fmt.Printf("Visit the URL for the auth dialog: \n  %s\n\n", url)
-		a.AuthCode, err = PromptSecret("Enter authorization code (echo off):")
-		ServerChan <- a
+		code, err := PromptSecret("Enter authorization code (echo off):")
+		a.SetAuthCode(code)
 		return nil
 	}
 
-	fmt.Println("OPENED")
 	fmt.Println("Internal HTTP server will receive authorization code.")
+
+	// FIXME
+	m := make(chan interface{})
+	<-m
 
 	return nil
 }
