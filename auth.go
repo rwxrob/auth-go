@@ -7,7 +7,6 @@ import (
 	"path/filepath"
 	"runtime"
 	"syscall"
-	"time"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/term"
@@ -90,11 +89,6 @@ func PromptSecret(s string) (string, error) {
 // refreshing done by the oauth2.Client.
 func Authorize(a *App) error {
 
-	// just bail if token hasn't expired
-	if a.RefreshToken != "" && !a.Expiry.Before(time.Now()) {
-		return nil
-	}
-
 	// start server and send app to it for caching
 	AddSession(a)
 	StartLocalServer()
@@ -106,15 +100,11 @@ func Authorize(a *App) error {
 	if err != nil {
 		fmt.Printf("Visit the URL for the auth dialog: \n  %s\n\n", url)
 		code, err := PromptSecret("Enter authorization code (echo off):")
+		if err != nil {
+			return err
+		}
 		a.SetAuthCode(code)
 		return nil
 	}
-
-	fmt.Println("Internal HTTP server will receive authorization code.")
-
-	// FIXME
-	m := make(chan interface{})
-	<-m
-
 	return nil
 }

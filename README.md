@@ -44,5 +44,5 @@ the user is prompted to authorize a new one.
 
 ## TODO
 
-* Integrate the main 3-leg Oauth2 flow
-* Mock endpoint for testing
+* Need to polish up the `auth` command and test `App.Client()`
+* Mock endpoint for testing (someday)

@@ -30,64 +30,71 @@ func AddSession(a *App) {
 // GetSession returns a session from the internal map cache if found,
 // otherwise nil.
 func GetSession(state string) *App {
-	defer sessions.RUnlock()
-	sessions.RLock()
+	//	defer sessions.RUnlock()
+	//	sessions.RLock()
 	if v, has := sessions.d[state]; has {
 		return v
 	}
 	return nil
 }
 
+// outputs to browser as soon as written
+func write(w http.ResponseWriter, s string) {
+	io.WriteString(w, s)
+	if f, ok := w.(http.Flusher); ok {
+		f.Flush()
+	}
+}
+
 // HandleRedirect processes all awaiting Oauth2 grant authorization
 // sessions checking the states, receiving the code, and then upgrading
-// the code to a token.
+// the code to a token writing flushed simple text status messages along
+// the way.
 func HandleRedirect(w http.ResponseWriter, req *http.Request) {
 	var app *App
 
-	io.WriteString(w, "Parsing data ... ")
+	write(w, "Parsing data ... ")
 	req.ParseForm()
-	io.WriteString(w, "parsed\n")
+	write(w, "parsed\n")
 
-	io.WriteString(w, "Checking CSRF state ... ")
+	write(w, "Checking CSRF state ... ")
 	state := req.FormValue("state")
 	if state == "" {
-		io.WriteString(w, "state not found\n")
+		write(w, "state not found\n")
 		return
 	}
-	io.WriteString(w, "matched\n")
+	write(w, "matched\n")
 
-	io.WriteString(w, "Looking up pending auth sessions ... ")
+	write(w, "Looking up pending auth sessions ... ")
 	app = GetSession(state)
 	if app == nil {
-		io.WriteString(w, "not found\n")
+		write(w, "not found\n")
 		return
 	}
-	io.WriteString(w, "found\n")
+	write(w, "found\n")
 
-	// concurrent writes ahead
-	app.Lock()
-	defer app.Unlock()
-
-	io.WriteString(w, "Looking for authorization code ... ")
+	write(w, "Looking for authorization code ... ")
 	code := req.FormValue("code")
 	if code == "" {
-		io.WriteString(w, "not found\n")
+		write(w, "not found\n")
 		return
 	}
 	app.SetAuthCode(code)
-	io.WriteString(w, "found\n")
+	write(w, "found\n")
 
-	io.WriteString(w, "Upgrading to access token ... ")
+	write(w, "Upgrading to access token ... ")
 	ctx := context.Background()
 	tok, err := app.Exchange(ctx, app.AuthCode)
 	if err != nil {
-		io.WriteString(w, err.Error())
-		io.WriteString(w, "failed\n")
+		write(w, err.Error())
+		write(w, "failed\n")
 		return
 	}
 	app.Token = *tok
-	delete(sessions.d, app.AuthState)
-	io.WriteString(w, "authorized\n")
+	delete(sessions.d, app.AuthState) // leave for GC?
+	write(w, "authorized\n")
+
+	write(w, "This browser window can now be closed.")
 }
 
 // StartLocalServer start the main HTTP server locally to receive
