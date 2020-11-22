@@ -5,9 +5,13 @@
 [![Coverage](https://gocover.io/_badge/gitlab.com/rwxrob/auth-go)](https://gocover.io/gitlab.com/rwxrob/auth-go)
 
 Designed to help make command line Oauth2 easier to implement and use
-from shell scripts.
+from shell scripts and other command line utilities.
 
 ## Command Usage
+
+```
+auth token
+```
 
 ### General Management
 
@@ -40,7 +44,5 @@ the user is prompted to authorize a new one.
 
 ## TODO
 
-* Combine `Data` into a single file so enable secure options rather than
-  having to operate and update several separate files
-* Mock endpoint for testing
 * Integrate the main 3-leg Oauth2 flow
+* Mock endpoint for testing

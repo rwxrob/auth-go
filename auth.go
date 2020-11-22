@@ -1,47 +1,47 @@
 package auth
 
 import (
-	"context"
 	"fmt"
 	"os"
 	"os/exec"
 	"path/filepath"
 	"runtime"
 	"syscall"
+	"time"
 
 	"golang.org/x/oauth2"
 	"golang.org/x/term"
 )
 
-// Changing AuthDirEnv affects every subsequent call to most top-level
-// functions in this package. Changing it is not safe for concurrency.
-var DirEnvVar = `AUTHDIR`
-
-func Dir() string {
-	return os.Getenv(DirEnvVar)
+// LoadConfig loads the configuration file (see Config). Returns nil if
+// unable to load.
+func LoadConfig() (Config, error) {
+	c := new(Config)
+	err := c.Load()
+	if err != nil {
+		return nil, err
+	}
+	return *c, nil
 }
 
-// Authorize
-func Authorize(d *Data) error {
-	url := d.AuthCodeURL("state", oauth2.AccessTypeOffline)
-	err := OpenBrowser(url)
-	if err != nil {
-		fmt.Printf("Visit the URL for the auth dialog: \n%s\n\n", url)
+// ConfigFile returns the path to the configuration file. First the
+// AUTHCONF env var is checked and if not found the os.UserConfigDir
+// will be checked for an auth/config.json file.
+func ConfigFile() string {
+	file := os.Getenv("AUTHCONF")
+	if file == "" {
+		dir, err := os.UserConfigDir()
+		if err != nil {
+			return ""
+		}
+		dir = filepath.Join(dir, "auth")
+		err = os.Mkdir(dir, 0700)
+		if err != nil {
+			return ""
+		}
+		file = filepath.Join(dir, "config.json")
 	}
-	code, err := Prompt("Enter authorization code:")
-	if err != nil {
-		return fmt.Errorf("openlocalbrowser: unable to read authorization code %v", err)
-	}
-	ctx := context.Background()
-	tok, err := d.Exchange(ctx, code)
-	if err != nil {
-		return err
-	}
-
-	d.Token = *tok
-	Cache(d)
-
-	return nil
+	return file
 }
 
 // OpenBrowser opens the default (usually graphical) web browser on the
@@ -79,94 +79,44 @@ func PromptSecret(s string) (string, error) {
 	return string(input), err
 }
 
-// Load returns a Data structure having loaded it from the AUTHDIR
-// returning nil if either AUTHDIR is not set or the named data is not
-// found. Data is stored unencrypted within files with names matching the
-// Data.Name. These files should be considered interally encapsulated
-// and therefore never directly accessed since the saved file format may
-// change over time just as one would generally not directly access such
-// files cached within a web browser.
-func Load(name string) *Data {
-	path := filepath.Join(Dir(), name)
-	data := new(Data)
-	err := data.Load64(path)
-	if err != nil {
+// Authorize runs through the minimum required Oauth2 authorization flow
+// avoiding interactive user input when possible by starting up a local
+// HTTP server (or using the one that has already been started) to
+// capture the incoming redirected data. Note that the oauth2 package
+// does not provide any way of detecting expired refresh tokens (only
+// access tokens). Currently the best alternative is to trap
+// oath2.Client() requests that are unsuccessful and call Authorize in
+// such cases in addition to depending on the "automatic" token
+// refreshing done by the oauth2.Client.
+func Authorize(a *App) error {
+
+	// just bail if token hasn't expired
+	if a.RefreshToken != "" && !a.Expiry.Before(time.Now()) {
 		return nil
 	}
-	return data
-}
 
-// Cache saves the Data into the AUTHDIR as base64 encoded JSON. This
-// format of the caching should never be relied on, however, as there is
-// no guarantee this format might not change in the future. Indeed, it
-// is likely optionally support some form of flat-file encryption
-// eventually.
-func Cache(d *Data) error {
-	return d.Save64(Path(d.Name), 0600)
-}
-
-// Exists returns true if cached data exists for the given name.
-func Exists(name string) bool {
-	_, err := os.Stat(Path(name))
+	// start server and send app to it for caching
+	err := StartLocalServer()
 	if err != nil {
-		return false
+		return err
 	}
-	return true
-}
+	a.SetAuthState()
+	ServerChan <- a
 
-// Path returns the path to the cached file within Dir(). Usually this
-// will be an absolute path, but that is determined by the value of
-// DirAuthVar. Also see Dir().
-func Path(name string) string {
-	if len(name) == 0 {
-		return ""
+	// open the user's web browser or prompt for auth code
+	fmt.Print("Attempting to open your web browser ... ")
+	url := a.AuthCodeURL(a.AuthState, oauth2.AccessTypeOffline)
+	err = OpenBrowser(url)
+	if err != nil {
+		fmt.Println("FAILED")
+		fmt.Printf("Visit the URL for the auth dialog: \n  %s\n\n", url)
+		a.AuthCode, err = PromptSecret("Enter authorization code (echo off):")
+		ServerChan <- a
+		return nil
 	}
-	return filepath.Join(Dir(), name)
-}
 
-// Import reads a JSON or YAML file and returns a pointer to
-// a configuration Data structure. A number of field names may be used
-// including those from the Oauth2 RFC. Import will intelligently infer
-// the type and structure of the imported data path. Files can be in
-// JSON, YAML, TOML, XML or base64 encoded versions of any of them. The
-// first runes of each will be read to determine the files type
-// (JSON='{', YAML='---', TOML='[data]', XML='<data>',
-// Base64=~^[A-Za-z0-9+/]) Files may contain multiple configuration data
-// structures (usually the result of an Export()) or just one.
-func Import(file string) *Data {
-	d := new(Data)
-	// TODO
-	return d
-}
+	fmt.Println("OPENED")
+	fmt.Println("Internal HTTP server will receive authorization code.")
 
-// ImportMany takes a path to a directory or single file and imports all
-// the importable configurations it can from that location by
-// intelligently sensing what is there in order to make short work of
-// combining and organizing multiple configurations. When importing
-// a directory all files will be opened and attempted and will
-// recursively descend into all subdirectories adding a dot (.) for
-// every depth level to avoid name collisions.
-func ImportMany(from string) *Data {
-	// TODO
 	return nil
 }
-
-/* TODO later
-// EncryptWithTouchAuth takes a byte array and encrypts it after
-// requiring a touchable physical authentication device using the FIDO2
-// U2F protocol. The first device found will automatically be assumed.
-func EncryptWithTouchAuth(b []byte) ([]byte, error) {
-	var enc []byte
-	var err error
-
-	// get all the devices and pick the first one
-
-	// create the temporary keys
-
-	// prompt for touch and encrypt
-
-	//
-	enc = []byte("blah")
-	return enc, err
-}
-*/

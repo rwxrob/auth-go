@@ -1,7 +1,5 @@
 package main
 
-import "gitlab.com/rwxrob/auth"
+import "gitlab.com/rwxrob/cmdtab"
 
-func main() {
-	auth.PromptSecret("Enter something secret:")
-}
+func main() { cmdtab.Execute("auth") }
