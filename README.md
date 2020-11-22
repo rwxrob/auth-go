@@ -7,26 +7,54 @@
 Designed to help make command line Oauth2 easier to implement and use
 from shell scripts and other command line utilities.
 
-## Command Usage
+## Example Usage
+
+### Create, Replace, Update, Delete (CRUD)
 
 ```
-auth token
+auth init
+auth import <file> (JSON,YAML,TOML,XML)
+auth export <file>
+auth add <name>
+auth rm <name>
+auth token <name>
+auth grant <name>
+auth refresh <name>
+auth edit
 ```
 
-### General Management
+### View / Output
 
-When run without any arguments `auth` enters interactive REPL user mode
-prompting for actions and input.
-
-All actions can be executed without interaction by entering the
-subcommands and arguments:
-
-```sh
-auth create gitlab-rwxrob
-auth import gitlab-rwxrob.yml
+```
+auth ls
+auth json <name>
+auth yaml <name>
+auth toml <name>
+auth xml <name>
 ```
 
-### Shell Script Integration
+### Fields
+
+```
+auth access <name> (default)
+auth refresh <name>
+auth expiry <name>
+auth state <name>
+auth code <name>
+auth id <name>
+auth secret <name>
+auth scopes <name>
+auth redirecturl <name>
+auth authurl <name>
+auth tokenurl <name>
+auth authstyle <name>
+auth authconf 
+```
+### Embed
+
+```
+curl -H "Authorization: Bearer $(auth <name>)" https://api.example.com/some
+```
 
 The `auth` command can be used in place of sensitive token and other
 credential information within shell scripts. By default, the user will
@@ -34,10 +62,6 @@ be prompted when further authorization flow steps are needed, including
 the opening of a local graphical web browser automatically. The level of
 interaction can be isolated for scripts that must run without blocking
 on waits for interactivity.
-
-```sh
-curl ... $(auth token gitlab)
-```
 
 By default, if a token of the given type is not cached or has expired
 the user is prompted to authorize a new one.

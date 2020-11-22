@@ -1,12 +1,14 @@
 package main
 
 import (
+	"fmt"
+	"os"
+
 	"gitlab.com/rwxrob/cmdtab"
 )
 
 func init() {
-	x := cmdtab.New("auth", "token", "renew")
-	//x.Default = "token"
+	x := cmdtab.New("auth", "token", "renew", "scopes", "conf")
 	x.Summary = `use and manage cached oauth2 and other authorizations`
 	x.Description = `
 		The *auth* utility command is designed to make command line
@@ -18,4 +20,26 @@ func init() {
 		from a single, secured JSON store not unlike other command line
 		security tools such as ssh and gpg.
 	`
+	x.Method = func(args []string) error {
+		if len(args) == 0 {
+			return x.UsageError()
+		}
+		switch args[0] {
+		case "access", "refresh", "expiry", "state", "code",
+			"id", "secret", "scopes", "redirecturl", "authurl",
+			"tokenurl", "authstyle":
+			/* TODO
+			c, err := auth.LoadConfig()
+			if err != nil {
+				return err
+			}
+			*/
+			return cmdtab.Call("get", args)
+		case "conf":
+			fmt.Println(os.Getenv("AUTHCONF"))
+			return nil
+		default:
+			return x.UsageError()
+		}
+	}
 }
