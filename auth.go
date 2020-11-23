@@ -43,17 +43,17 @@ func ConfigFilePath() string {
 	return file
 }
 
-// OpenBrowser opens the default (usually graphical) web browser on the
-// current system. Currently only linux, windows, and darwin are
-// supported.
-func OpenBrowser(url string) error {
+// OpenResource opens the the specified resource (URL, file, etc.) using
+// the opener of the current system. Currently only linux, windows, and
+// darwin are supported.
+func OpenResource(res string) error {
 	switch runtime.GOOS {
 	case "linux":
-		return exec.Command("xdg-open", url).Start()
+		return exec.Command("xdg-open", res).Start()
 	case "windows", "darwin":
-		return exec.Command("open", url).Start()
+		return exec.Command("open", res).Start()
 	default:
-		return fmt.Errorf("openbrowser: unsupported platform: %s",
+		return fmt.Errorf("openresource: unsupported platform: %s",
 			runtime.GOOS,
 		)
 	}
@@ -96,7 +96,7 @@ func Authorize(a *App) error {
 	// open the user's web browser or prompt for auth code
 	fmt.Println("Attempting to open your web browser")
 	url := a.AuthCodeURL(a.AuthState, oauth2.AccessTypeOffline)
-	err := OpenBrowser(url)
+	err := OpenResource(url)
 	if err != nil {
 		fmt.Printf("Visit the URL for the auth dialog: \n  %s\n\n", url)
 		code, err := PromptSecret("Enter authorization code (echo off):")

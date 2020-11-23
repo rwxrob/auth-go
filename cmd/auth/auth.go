@@ -8,8 +8,9 @@ import (
 )
 
 func init() {
-	x := cmdtab.New("auth", "token", "renew", "scopes", "conf")
+	x := cmdtab.New("auth", "token", "grant", "ls", "edit", "scopes", "conf", "json")
 	x.Summary = `use and manage cached oauth2 and other authorizations`
+
 	x.Description = `
 		The *auth* utility command is designed to make command line
 		integration of Oauth2 and other standard authorizations easier and
@@ -19,7 +20,15 @@ func init() {
 		this need by managing all authorization cache and configuration data
 		from a single, secured JSON store not unlike other command line
 		security tools such as ssh and gpg.
-	`
+
+		Interactivity
+
+		The *auth* command is primary meant to be used from the command line
+		by users directly or embedded into scripts that generally have user
+		interaction. Therefore, attention should be given to which
+		subcommands are used when creating automations that would be
+		negatively impacted by blocking for user interaction. `
+
 	x.Method = func(args []string) error {
 		if len(args) == 0 {
 			return x.UsageError()
@@ -27,19 +36,16 @@ func init() {
 		switch args[0] {
 		case "access", "refresh", "expiry", "state", "code",
 			"id", "secret", "scopes", "redirecturl", "authurl",
-			"tokenurl", "authstyle":
-			/* TODO
-			c, err := auth.LoadConfig()
-			if err != nil {
-				return err
-			}
-			*/
+			"tokenurl", "style":
 			return cmdtab.Call("get", args)
 		case "conf":
 			fmt.Println(os.Getenv("AUTHCONF"))
 			return nil
 		default:
-			return x.UsageError()
+			if cmdtab.Has(args[0]) {
+				return cmdtab.Call(args[0], args[1:])
+			}
+			return cmdtab.Call("token", args[1:])
 		}
 	}
 }

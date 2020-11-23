@@ -12,7 +12,6 @@ from shell scripts and other command line utilities.
 ### Create, Replace, Update, Delete (CRUD)
 
 ```
-auth init
 auth import <file> (JSON,YAML,TOML,XML)
 auth export <file>
 auth add <name>
@@ -38,6 +37,7 @@ auth xml <name>
 ```
 auth access <name> (default)
 auth refresh <name>
+auth type <name>
 auth expiry <name>
 auth state <name>
 auth code <name>
@@ -47,8 +47,8 @@ auth scopes <name>
 auth redirecturl <name>
 auth authurl <name>
 auth tokenurl <name>
-auth authstyle <name>
-auth authconf 
+auth style <name>
+auth conf 
 ```
 ### Embed
 
