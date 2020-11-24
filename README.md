@@ -1,5 +1,7 @@
 # Go Oauth2 Helper Module
 
+[![Oauth2 Session](session.gif)]
+
 [![GoDoc](https://godoc.org/gitlab.com/rwxrob/auth-go?status.svg)](https://godoc.org/gitlab.com/rwxrob/auth-go)
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/rwxrob/auth-go)](https://goreportcard.com/report/gitlab.com/rwxrob/auth-go)
 [![Coverage](https://gocover.io/_badge/gitlab.com/rwxrob/auth-go)](https://gocover.io/gitlab.com/rwxrob/auth-go)
@@ -15,8 +17,7 @@ from shell scripts and other command line utilities.
 auth token <name> (default)
 auth refresh <name>
 
-auth add <name>
-
+auth add
 auth export <file> [<name> ...]
 auth import <file> [<name> ...]
 auth rm <name>

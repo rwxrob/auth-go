@@ -6,10 +6,9 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
-	"syscall"
 
+	"gitlab.com/rwxrob/prompt"
 	"golang.org/x/oauth2"
-	"golang.org/x/term"
 )
 
 // OpenConfig loads the configuration file (see Config). Returns nil if
@@ -59,25 +58,6 @@ func OpenResource(res string) error {
 	}
 }
 
-// Prompt simply prompts the user to enter text interactively.
-func Prompt(s string) (string, error) {
-	fmt.Printf("%v ", s)
-	var input string
-	if _, err := fmt.Scanln(&input); err != nil {
-		return "", err
-	}
-	return input, nil
-}
-
-// PromptSecret prompts the user to enter text interactively but does
-// not echo what they are typing to the screen.
-func PromptSecret(s string) (string, error) {
-	fmt.Printf("%v ", s)
-	input, err := term.ReadPassword(int(syscall.Stdin))
-	fmt.Println()
-	return string(input), err
-}
-
 // Authorize runs through the minimum required Oauth2 authorization flow
 // avoiding interactive user input when possible by starting up a local
 // HTTP server (or using the one that has already been started) to
@@ -99,7 +79,7 @@ func Authorize(a *App) error {
 	err := OpenResource(url)
 	if err != nil {
 		fmt.Printf("Visit the URL for the auth dialog: \n  %s\n\n", url)
-		code, err := PromptSecret("Enter authorization code (echo off):")
+		code, err := prompt.Secret("Enter authorization code (echo off):")
 		if err != nil {
 			return err
 		}

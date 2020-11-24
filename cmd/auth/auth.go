@@ -9,9 +9,9 @@ import (
 
 func init() {
 	x := cmdtab.New(
-		"auth", "token", "grant", "ls", "rm", "import", "edit", "scopes",
-		"conf", "json", "access", "refresh", "type", "expiry", "state",
-		"code", "id", "secret", "redirecturl", "authurl")
+		"auth", "token", "grant", "ls", "rm", "add", "import", "edit",
+		"scopes", "conf", "json", "access", "refresh", "type", "expiry",
+		"state", "code", "id", "secret", "redirecturl", "authurl")
 
 	x.Summary = `use and manage cached oauth2 and other authorizations`
 
