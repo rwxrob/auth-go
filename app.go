@@ -3,6 +3,7 @@ package auth
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/url"
 	"sync"
 
@@ -39,6 +40,23 @@ func (a App) Print() { fmt.Println(a) }
 func (a App) JSON() []byte {
 	byt, _ := json.Marshal(a)
 	return byt
+}
+
+// Save writes the App to disk at the specified path.
+func (a App) Save(path string) error {
+	return ioutil.WriteFile(path, []byte(a.String()), 0600)
+}
+
+// Parse is simply a wrapper for json.Unmarshal().
+func (a *App) Parse(buf []byte) error { return json.Unmarshal(buf, a) }
+
+// Load loads the JSON data from the specified path.
+func (a *App) Load(path string) error {
+	buf, err := ioutil.ReadFile(path)
+	if err != nil {
+		return err
+	}
+	return a.Parse(buf)
 }
 
 // SetAuthState updates the state to a new unique (base32) string.

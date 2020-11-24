@@ -1,0 +1,21 @@
+{
+  "Name": "humm",
+  "AuthState": "HKTL0KICRTC43GHMV2KIMR9BQ6IN3LQC",
+  "AuthCode": "4TTNKLRBQPPCFDLJGKUA1KUA2JQ2OJC0",
+  "ClientID": "884dc916-15fd-431a-b862-8229fcd3275c",
+  "ClientSecret": "ff69870d-2172-4775-867e-c2d9de7db3ff",
+  "Endpoint": {
+    "AuthURL": "https://api.example.com/login",
+    "TokenURL": "https://api.example.com/oauth/token",
+    "AuthStyle": 0
+  },
+  "RedirectURL": "http://localhost:8080/redirected",
+  "Scopes": [
+    "some.scope",
+    "another.scope"
+  ],
+  "access_token": "bc0a63ca4f42475380cbaf2c69b09f79",
+  "token_type": "Bearer",
+  "refresh_token": "182c54760a6d4341b7fec86b98b44df0",
+  "expiry": "2020-11-22T04:48:04.346575615-05:00"
+}

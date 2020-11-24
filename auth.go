@@ -12,11 +12,11 @@ import (
 	"golang.org/x/term"
 )
 
-// LoadConfig loads the configuration file (see Config). Returns nil if
+// OpenConfig loads the configuration file (see Config). Returns nil if
 // unable to load.
-func LoadConfig() (Config, error) {
+func OpenConfig() (Config, error) {
 	c := new(Config)
-	err := c.Load()
+	err := c.Open()
 	if err != nil {
 		return nil, err
 	}

@@ -12,30 +12,25 @@ from shell scripts and other command line utilities.
 ### Create, Replace, Update, Delete (CRUD)
 
 ```
-auth import <file> (JSON,YAML,TOML,XML)
-auth export <file>
-auth add <name>
-auth rm <name>
-auth token <name>
-auth grant <name>
+auth token <name> (default)
 auth refresh <name>
+
+auth add <name>
+
+auth export <file> [<name> ...]
+auth import <file> [<name> ...]
+auth rm <name>
 auth edit
+auth grant <name>
 ```
 
 ### View / Output
 
 ```
+auth conf 
 auth ls
 auth json <name>
-auth yaml <name>
-auth toml <name>
-auth xml <name>
-```
-
-### Fields
-
-```
-auth access <name> (default)
+auth access <name>
 auth refresh <name>
 auth type <name>
 auth expiry <name>
@@ -48,7 +43,6 @@ auth redirecturl <name>
 auth authurl <name>
 auth tokenurl <name>
 auth style <name>
-auth conf 
 ```
 ### Embed
 
@@ -68,5 +62,7 @@ the user is prompted to authorize a new one.
 
 ## TODO
 
+* Add some detection of changes to the file since opened so don't
+  overwrite with currently running process with the cache open (like vi)
 * Need to polish up the `auth` command and test `App.Client()`
 * Mock endpoint for testing (someday)

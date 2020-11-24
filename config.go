@@ -11,6 +11,12 @@ import (
 // transfer, and encryption.
 type Config map[string]*App
 
+// Has returns true of the name exists.
+func (c Config) Has(name string) bool {
+	_, has := c[name]
+	return has
+}
+
 // String implements the Stringer interface as long form JSON.
 func (c Config) String() string {
 	byt, _ := json.MarshalIndent(c, "", "  ")
@@ -27,20 +33,23 @@ func (c Config) JSON() []byte {
 	return byt
 }
 
-// Save writes the Config to disk. By default this is written to
-// os.UserConfigDirectory under the auth directory with the file name
-// config.json. If the AUTHCONF environment variable is set will save to
-// that file instead.
-func (c Config) Save() error {
-	return ioutil.WriteFile(ConfigFilePath(), []byte(c.String()), 0600)
+// Save writes the config JSON data to a file at specified path.
+func (c Config) Save(path string) error {
+	return ioutil.WriteFile(path, []byte(c.String()), 0600)
 }
+
+// Cache saves to the file specified by ConfigFilePath(). See Save().
+func (c Config) Cache() error { return c.Save(ConfigFilePath()) }
 
 // Parse is simply a wrapper for json.Unmarshal().
 func (c *Config) Parse(buf []byte) error { return json.Unmarshal(buf, c) }
 
-// Load loads the JSON data from the ConfigFilePath path.
-func (c *Config) Load() error {
-	buf, err := ioutil.ReadFile(ConfigFilePath())
+// Open loads the JSON data from the ConfigFilePath path.
+func (c *Config) Open() error { return c.Load(ConfigFilePath()) }
+
+// Load reads the JSON data from the specified path.
+func (c *Config) Load(path string) error {
+	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
 	}

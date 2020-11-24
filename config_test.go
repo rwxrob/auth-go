@@ -19,7 +19,7 @@ func TestConfigSave(t *testing.T) {
 	file := filepath.Join(dir, "testconfig.json")
 	defer os.Setenv("AUTHCONF", os.Getenv("AUTHCONF"))
 	os.Setenv("AUTHCONF", file)
-	c.Save()
+	c.Cache()
 	buf, _ := ioutil.ReadFile(file)
 	fmt.Println(string(buf))
 }
@@ -28,7 +28,7 @@ func TestConfigSave(t *testing.T) {
 func TestConfigClient(t *testing.T) {
 	//defer os.Setenv("AUTHCONF", os.Getenv("AUTHCONF"))
 	//os.Setenv("AUTHCONF", "testdata/rwxyou/config.json")
-	c, err := LoadConfig()
+	c, err := OpenConfig()
 	if err != nil {
 		t.Fatal(err)
 	}
