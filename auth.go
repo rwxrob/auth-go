@@ -11,6 +11,21 @@ import (
 	"golang.org/x/oauth2"
 )
 
+// Lookup returns a Config loaded from the configuration file cache and
+// a reference to the specified app if found. An error is also returned
+// to explain if either of them are nil for any reason.
+func Lookup(name string) (Config, *App, error) {
+	config, err := OpenConfig()
+	if err != nil {
+		return nil, nil, err
+	}
+	app, has := config[name]
+	if !has {
+		return nil, nil, fmt.Errorf("'%v' not found", name)
+	}
+	return config, app, nil
+}
+
 // OpenConfig loads the configuration file (see Config). Returns nil if
 // unable to load.
 func OpenConfig() (Config, error) {

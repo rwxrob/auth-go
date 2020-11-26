@@ -11,45 +11,49 @@ from shell scripts and other command line utilities.
 
 ## Example Usage
 
+### Main
+
+```
+auth token <name>
+auth grant <name>
+auth refresh <name>
+```
+
 ### Create, Replace, Update, Delete (CRUD)
 
 ```
-auth token <name> (default)
-
-auth refresh <name>
-
 auth add
-auth export <file> [<name> ...]
-auth import <file> [<name> ...]
 auth rm <name>
 auth edit
-auth grant <name>
+auth export <file> [<name> ...]
+auth import <file> [<name> ...]
 ```
 
 ### View / Output
 
 ```
-auth conf 
 auth ls
-auth json <name>
-auth access <name>
-auth refresh <name>
-auth type <name>
-auth expiry <name>
-auth state <name>
-auth code <name>
-auth id <name>
-auth secret <name>
-auth scopes <name>
-auth redirecturl <name>
-auth authurl <name>
-auth tokenurl <name>
-auth style <name>
+auth conf 
+auth get json <name>
+auth get access <name>
+auth get refresh <name>
+auth get type <name>
+auth get expiry <name>
+auth get state <name>
+auth get code <name>
+auth get id <name>
+auth get secret <name>
+auth get scopes <name>
+auth get redirecturl <name>
+auth get authurl <name>
+auth get tokenurl <name>
+auth get style <name>
 ```
+
 ### Embed
 
 ```
-curl -H "Authorization: Bearer $(auth <name>)" https://api.example.com/some
+curl -H "Authorization: Bearer $(auth token <name>)" https://api.example.com/some
 ```
 
 The `auth` command can be used in place of sensitive token and other
@@ -66,5 +70,3 @@ the user is prompted to authorize a new one.
 
 * Add some detection of changes to the file since opened so don't
   overwrite with currently running process with the cache open (like vi)
-* Need to polish up the `auth` command and test `App.Client()`
-* Mock endpoint for testing (someday)

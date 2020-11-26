@@ -1,19 +1,19 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
 	"gitlab.com/rwxrob/cmdtab"
 )
 
 func init() {
 	x := cmdtab.New(
-		"auth", "token", "grant", "ls", "rm", "add", "import", "edit",
-		"scopes", "conf", "json", "access", "refresh", "type", "expiry",
-		"state", "code", "id", "secret", "redirecturl", "authurl")
-
+		"auth", "token", "grant", "ls", "get", "rm", "add", "import",
+		"edit", "json", "refresh", "conf")
 	x.Summary = `use and manage cached oauth2 and other authorizations`
+	x.Version = "1.0.0"
+	x.Author = "Rob Muhlestein <rwx@robs.io> (rwxrob.live)"
+	x.Git = "gitlab.com/rwxrob/auth/cmd/auth"
+	x.Copyright = "(c) Rob Muhlestein"
+	x.License = "Apache-2.0"
 
 	x.Description = `
 		The *auth* utility command is designed to make command line
@@ -33,23 +33,4 @@ func init() {
 		subcommands are used when creating automations that would be
 		negatively impacted by blocking for user interaction. `
 
-	x.Method = func(args []string) error {
-		if len(args) == 0 {
-			return x.UsageError()
-		}
-		switch args[0] {
-		case "access", "refresh", "expiry", "state", "code",
-			"id", "secret", "scopes", "redirecturl", "authurl",
-			"tokenurl", "style":
-			return cmdtab.Call("get", args)
-		case "conf":
-			fmt.Println(os.Getenv("AUTHCONF"))
-			return nil
-		default:
-			if cmdtab.Has(args[0]) {
-				return cmdtab.Call(args[0], args[1:])
-			}
-			return cmdtab.Call("token", args[1:])
-		}
-	}
 }
