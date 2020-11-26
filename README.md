@@ -36,7 +36,7 @@ auth import <file> [<name> ...]
 ```
 auth ls
 auth conf 
-auth get json <name>
+auth json <name>
 auth get access <name>
 auth get refresh <name>
 auth get type <name>
