@@ -70,5 +70,6 @@ the user is prompted to authorize a new one.
 
 ## TODO
 
+* As much test coverage as we can achieve without a mock token server
 * Add some detection of changes to the file since opened so don't
   overwrite with currently running process with the cache open (like vi)
