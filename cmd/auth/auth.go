@@ -7,7 +7,7 @@ import (
 func init() {
 	x := cmdtab.New(
 		"auth", "token", "grant", "ls", "get", "rm", "add", "import",
-		"edit", "json", "refresh", "conf")
+		"edit", "json", "refresh", "conf", "valid")
 	x.Summary = `use and manage cached oauth2 and other authorizations`
 	x.Version = "1.0.0"
 	x.Author = "Rob Muhlestein <rwx@robs.io> (rwxrob.live)"

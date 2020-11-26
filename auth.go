@@ -11,6 +11,43 @@ import (
 	"golang.org/x/oauth2"
 )
 
+// Has returns 1 if the given name exists in the cache, 0 if not, and -1
+// if cannot determine.
+func Has(name string) int8 {
+	config, err := OpenConfig()
+	if err != nil {
+		return -1
+	}
+	if config.Has(name) {
+		return 1
+	}
+	return 0
+}
+
+// Valid returns one of four values: 1 if an access token exists for the
+// given name and has not expired, 0 if a token exists but has expired
+// or has no refresh token, -1 if there is no access token, and -2 if an
+// error prevents determining if it exists.
+func Valid(name string) int8 {
+	switch Has(name) {
+	case 0:
+		return -1
+	case -1:
+		return -2
+	}
+	_, app, err := Lookup(name)
+	if err != nil {
+		return -2
+	}
+	switch app.Valid() {
+	case true:
+		return 1
+	case false:
+		return 0
+	}
+	return -2
+}
+
 // Lookup returns a Config loaded from the configuration file cache and
 // a reference to the specified app if found. An error is also returned
 // to explain if either of them are nil for any reason.
