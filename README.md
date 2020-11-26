@@ -1,10 +1,13 @@
 # Go Oauth2 Helper Module
 
-[![Oauth2 Session](doc/session.gif)]
+![Oauth2 Session](doc/session.gif)
 
-[![GoDoc](https://godoc.org/gitlab.com/rwxrob/auth-go?status.svg)](https://godoc.org/gitlab.com/rwxrob/auth-go)
-[![Go Report Card](https://goreportcard.com/badge/gitlab.com/rwxrob/auth-go)](https://goreportcard.com/report/gitlab.com/rwxrob/auth-go)
-[![Coverage](https://gocover.io/_badge/gitlab.com/rwxrob/auth-go)](https://gocover.io/gitlab.com/rwxrob/auth-go)
+[![GoDoc](https://godoc.org/gitlab.com/rwxrob/auth?status.svg)](https://godoc.org/gitlab.com/rwxrob/auth)
+[![License](https://img.shields.io/badge/license-Apache-brightgreen.svg)](LICENSE)
+[![Go Report Card](https://goreportcard.com/badge/gitlab.com/rwxrob/auth)](https://goreportcard.com/report/gitlab.com/rwxrob/auth)
+[![Coverage](https://gocover.io/_badge/gitlab.com/rwxrob/auth)](https://gocover.io/gitlab.com/rwxrob/auth)
+
+
 
 Designed to help make command line Oauth2 easier to implement and use
 from shell scripts and other command line utilities.
@@ -17,6 +20,7 @@ from shell scripts and other command line utilities.
 auth token <name>
 auth grant <name>
 auth refresh <name>
+auth help
 ```
 
 ### Create, Replace, Update, Delete (CRUD)
