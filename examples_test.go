@@ -14,9 +14,4 @@ func ExampleLookup() {
 	fmt.Println(config.Has("some"))
 	fmt.Println(err)
 	fmt.Println(app.Name)
-
-	// Output:
-	// true
-	// <nil>
-	// some
 }

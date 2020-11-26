@@ -113,6 +113,8 @@ github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9de
 github.com/yuin/goldmark v1.2.1/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 gitlab.com/rwxrob/cmdtab v0.0.0-20200921025657-c517c1ac77b7 h1:9x1hvuvMGHKxpKLaTJOr7KKkUghBuFze9N76dUH//0g=
 gitlab.com/rwxrob/cmdtab v0.0.0-20200921025657-c517c1ac77b7/go.mod h1:E+x6E5YdLBDcPcQ1uvpVdAutOvKKD9OsoNdjZn3FL7A=
+gitlab.com/rwxrob/cmdtab v0.0.0-20201126001725-0125e9a6cf61 h1:d9avlV0MtxWSCy5syUCNzlLERvCTgvZ5p+lngkuE9+8=
+gitlab.com/rwxrob/cmdtab v0.0.0-20201126001725-0125e9a6cf61/go.mod h1:E+x6E5YdLBDcPcQ1uvpVdAutOvKKD9OsoNdjZn3FL7A=
 gitlab.com/rwxrob/prompt v0.0.0-20201124121324-14a4af91b02c h1:8KZQSy8ByaAFTHa7ouDkVlf/dTZNdedERwuJ06ogSYE=
 gitlab.com/rwxrob/prompt v0.0.0-20201124121324-14a4af91b02c/go.mod h1:ns8HihniYoS/5EEcMILYZ02NhZ7BoZjKuce1onx9IBU=
 gitlab.com/rwxrob/prompt v0.0.0-20201124142817-9e0ea1da5f62 h1:1X+CZjsY0X0AcAE2FD9nSDf7rRiuGBocf8+vb1pW5sY=
