@@ -100,11 +100,9 @@ func HandleRedirect(w http.ResponseWriter, req *http.Request) {
 // StartLocalServer start the main HTTP server locally to receive
 // redirects from Authorize. The same server is used for everything that
 // requires one in this package so care has been taken to ensure
-// requests are handled such that they are safe for concurrency.  By
-// default the server is started on the address localhost:8080 (and not
-// :8080 which would expose the server to other external interfaces) but
-// can be overriden with the AUTHHTTP environment variable. Also see
-// HandleRedirect.
+// requests are handled such that they are safe for concurrency.  The
+// hard coded to the address localhost:8080 (and not :8080 which would
+// expose the server to other external interfaces).
 func StartLocalServer() error {
 	http.HandleFunc("/redirected", HandleRedirect)
 	addr := "localhost:8080"

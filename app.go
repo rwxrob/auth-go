@@ -13,7 +13,7 @@ import (
 
 // App is an oath2-centric data structure designed to potentially hold
 // configuration data for other authentication methods supported by this
-// package. The oauth2.Config is embedded as is an oauth2.Token. This
+// package. The oauth2.Config is embedded as is oauth2.Token. This
 // allows referencing different client applications by their
 // user-friendly names while still using App exactly as would be done
 // with either struct by itself.

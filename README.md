@@ -7,8 +7,6 @@
 [![Go Report Card](https://goreportcard.com/badge/gitlab.com/rwxrob/auth)](https://goreportcard.com/report/gitlab.com/rwxrob/auth)
 [![Coverage](https://gocover.io/_badge/gitlab.com/rwxrob/auth)](https://gocover.io/gitlab.com/rwxrob/auth)
 
-
-
 Designed to help make command line Oauth2 easier to implement and use
 from shell scripts and other command line utilities.
 

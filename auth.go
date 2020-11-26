@@ -76,12 +76,7 @@ func OpenResource(res string) error {
 // Authorize runs through the minimum required Oauth2 authorization flow
 // avoiding interactive user input when possible by starting up a local
 // HTTP server (or using the one that has already been started) to
-// capture the incoming redirected data. Note that the oauth2 package
-// does not provide any way of detecting expired refresh tokens (only
-// access tokens). Currently the best alternative is to trap
-// oath2.Client() requests that are unsuccessful and call Authorize in
-// such cases in addition to depending on the "automatic" token
-// refreshing done by the oauth2.Client.
+// capture the incoming redirected data.
 func Authorize(a *App) error {
 
 	// start server and send app to it for caching
