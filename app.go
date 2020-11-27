@@ -86,8 +86,8 @@ func (a App) RedirectHost() string {
 	return url.Host
 }
 
-// Refresh submits the refresh_token grant request to the app.TokenURL.
-func (a *App) Refresh() error {
+// RefreshNow submits the refresh_token grant request to the app.TokenURL.
+func (a *App) RefreshNow() error {
 	ts := a.TokenSource(oauth2.NoContext, &a.Token)
 	nw, err := ts.Token()
 	if err != nil {
@@ -99,4 +99,12 @@ func (a *App) Refresh() error {
 		a.Unlock()
 	}
 	return nil
+}
+
+// Refresh calls Refresh only if needed. Does not grant.
+func (a *App) Refresh() error {
+	if a.Valid() {
+		return nil
+	}
+	return a.RefreshNow()
 }

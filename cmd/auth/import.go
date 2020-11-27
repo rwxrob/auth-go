@@ -13,7 +13,7 @@ func init() {
 	x.Summary = `import an app config JSON file into cache`
 
 	x.Description = `
-		The **import** subcommand loads the specified <file> (in JSON Config
+		The *import* subcommand loads the specified <file> (in JSON Config
 		cache format) into the local auth configuration cache overwriting
 		anything with the same name. If one or more of <name> is provided in
 		addition to <file> only those names will be imported.`
@@ -44,6 +44,6 @@ func init() {
 		for name, app := range imp {
 			conf[name] = app
 		}
-		return conf.Cache()
+		return conf.Store()
 	}
 }

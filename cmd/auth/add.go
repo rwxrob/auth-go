@@ -33,7 +33,7 @@ func init() {
 		app.RedirectURL = prompt.Plain("RedirectURL: ")
 		app.Endpoint.AuthURL = prompt.Plain("AuthURL: ")
 		app.Endpoint.TokenURL = prompt.Plain("TokenURL: ")
-		style := prompt.UntilStrict("AuthStyle: ", "^[0-3]$")
+		style := prompt.Plain("AuthStyle: ")
 		stylei, _ := strconv.Atoi(style)
 		app.Endpoint.AuthStyle = oauth2.AuthStyle(stylei)
 		app.AccessToken = prompt.Plain("AccessToken: ")
@@ -49,7 +49,7 @@ func init() {
 			}
 		}
 		conf[app.Name] = app
-		conf.Cache()
+		conf.Store()
 		return nil
 	}
 }

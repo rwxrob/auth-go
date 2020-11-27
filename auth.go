@@ -6,6 +6,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"time"
 
 	"gitlab.com/rwxrob/prompt"
 	"golang.org/x/oauth2"
@@ -46,6 +47,28 @@ func Valid(name string) int8 {
 		return 0
 	}
 	return -2
+}
+
+// Use is a the highest level entry point to this package. It returns
+// the same values as Lookup() but also does whatever work is necessary
+// to ensure that the named application has an updated access token.
+// This includes potentially triggering the interactive flow with the
+// user requiring authentication to the application through their web
+// browser. For this reason Use() should not be called in situations
+// where blocking on such interaction is not wanted. In such cases use
+// Lookup() instead. Note that the named application should already
+// exist and be present in the file located at ConfigFilePath().
+func Use(name string) (Config, *App, error) {
+	config, app, err := Lookup(name)
+	if err != nil {
+		return nil, nil, err
+	}
+	err = app.Refresh()
+	if err == nil {
+		return config, app, nil
+	}
+	err = Grant(app)
+	return config, app, nil
 }
 
 // Lookup returns a Config loaded from the configuration file cache and
@@ -110,11 +133,22 @@ func OpenResource(res string) error {
 	}
 }
 
-// Authorize runs through the minimum required Oauth2 authorization flow
-// avoiding interactive user input when possible by starting up a local
-// HTTP server (or using the one that has already been started) to
-// capture the incoming redirected data.
-func Authorize(a *App) error {
+// Grant runs through the Oauth2 authorization code grant flow avoiding
+// interactive user input when possible by starting up a local HTTP
+// server (or using the one that has already been started) to capture
+// the incoming redirected data.
+func Grant(this interface{}) error {
+	var a *App
+	config, err := OpenConfig()
+
+	// prompt arg into app ref
+	switch v := this.(type) {
+	case *App:
+		a = v
+	case string:
+		a = config[v]
+	}
+	exp := a.Expiry
 
 	// start server and send app to it for caching
 	AddSession(a)
@@ -123,12 +157,23 @@ func Authorize(a *App) error {
 	// open the user's web browser or prompt for auth code
 	fmt.Println("Attempting to open your web browser")
 	url := a.AuthCodeURL(a.AuthState, oauth2.AccessTypeOffline)
-	err := OpenResource(url)
+	err = OpenResource(url)
 	if err != nil {
 		fmt.Printf("Visit the URL for the auth dialog: \n  %s\n\n", url)
 		code := prompt.Secret("Enter authorization code (echo off):")
 		a.SetAuthCode(code)
 		return nil
 	}
-	return nil
+
+	// wait for redirect data update the app
+	fmt.Println("Wait for authorization to complete.")
+	fmt.Println("(Cancel with Ctrl-C if necessary.)")
+	for {
+		if a.Expiry != exp {
+			break
+		}
+		time.Sleep(300 * time.Millisecond)
+	}
+
+	return config.Store()
 }

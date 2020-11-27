@@ -38,8 +38,8 @@ func (c Config) Save(path string) error {
 	return ioutil.WriteFile(path, []byte(c.String()), 0600)
 }
 
-// Cache saves to the file specified by ConfigFilePath(). See Save().
-func (c Config) Cache() error { return c.Save(ConfigFilePath()) }
+// Store saves to the file specified by ConfigFilePath(). See Save().
+func (c Config) Store() error { return c.Save(ConfigFilePath()) }
 
 // Parse is simply a wrapper for json.Unmarshal().
 func (c *Config) Parse(buf []byte) error { return json.Unmarshal(buf, c) }

@@ -24,7 +24,7 @@ func init() {
 			return err
 		}
 		delete(config, name)
-		config.Cache()
+		config.Store()
 		return nil
 	}
 }

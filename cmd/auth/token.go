@@ -29,21 +29,11 @@ func init() {
 		if len(args) != 1 {
 			return x.UsageError()
 		}
-		_, app, err := auth.Lookup(args[0])
+		_, app, err := auth.Use(args[0])
 		if err != nil {
 			return err
 		}
-		if app.Valid() {
-			fmt.Println(app.AccessToken)
-			return nil
-		}
-		err = app.Refresh()
-		if err == nil {
-			fmt.Println(app.AccessToken)
-			return nil
-		}
-		fmt.Println(err)
-		fmt.Println("Attempting to grant a new token.")
-		return cmdtab.Call("grant", args)
+		fmt.Println(app.AccessToken)
+		return nil
 	}
 }

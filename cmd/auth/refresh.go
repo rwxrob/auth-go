@@ -37,6 +37,6 @@ func init() {
 			return err
 		}
 		fmt.Println(app.AccessToken)
-		return config.Cache()
+		return config.Store()
 	}
 }
