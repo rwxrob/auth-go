@@ -126,10 +126,7 @@ func Authorize(a *App) error {
 	err := OpenResource(url)
 	if err != nil {
 		fmt.Printf("Visit the URL for the auth dialog: \n  %s\n\n", url)
-		code, err := prompt.Secret("Enter authorization code (echo off):")
-		if err != nil {
-			return err
-		}
+		code := prompt.Secret("Enter authorization code (echo off):")
 		a.SetAuthCode(code)
 		return nil
 	}

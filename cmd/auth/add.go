@@ -27,63 +27,21 @@ func init() {
 			return err
 		}
 		app := new(auth.App)
-		app.Name, err = prompt.Until("Name (required): ")
-		if err != nil {
-			return err
-		}
-		app.ClientID, err = prompt.Until("ClientID (required): ")
-		if err != nil {
-			return err
-		}
-		app.ClientSecret, err = prompt.UntilSecret("ClientSecret (required): ")
-		if err != nil {
-			return err
-		}
-		app.RedirectURL, err = prompt.UntilStrict("RedirectURL (required): ", "^https?://")
-		if err != nil {
-			return err
-		}
-		app.Endpoint.AuthURL, err = prompt.UntilStrict("AuthURL (required): ", "^https?://")
-		if err != nil {
-			return err
-		}
-		app.Endpoint.TokenURL, err = prompt.UntilStrict("TokenURL (required): ", "^https?://")
-		if err != nil {
-			return err
-		}
-		style, err := prompt.UntilStrict("AuthStyle: ", "^[0-3]$")
-		if err != nil {
-			return err
-		}
-		stylei, err := strconv.Atoi(style)
-		if err != nil {
-			return err
-		}
+		app.Name = prompt.Until("Name (required): ")
+		app.ClientID = prompt.Plain("ClientID: ")
+		app.ClientSecret = prompt.Plain("ClientSecret: ")
+		app.RedirectURL = prompt.Plain("RedirectURL: ")
+		app.Endpoint.AuthURL = prompt.Plain("AuthURL: ")
+		app.Endpoint.TokenURL = prompt.Plain("TokenURL: ")
+		style := prompt.UntilStrict("AuthStyle: ", "^[0-3]$")
+		stylei, _ := strconv.Atoi(style)
 		app.Endpoint.AuthStyle = oauth2.AuthStyle(stylei)
-		app.AccessToken, err = prompt.Plain("AccessToken: ")
-		if err != nil {
-			return err
-		}
-		app.RefreshToken, err = prompt.Plain("RefreshToken: ")
-		if err != nil {
-			return err
-		}
-		app.TokenType, err = prompt.Plain("TokenType: ")
-		if err != nil {
-			return err
-		}
-		app.AuthState, err = prompt.Plain("AuthState: ")
-		if err != nil {
-			return err
-		}
-		app.AuthCode, err = prompt.Plain("AuthCode: ")
-		if err != nil {
-			return err
-		}
-		scopes, err := prompt.Plain("Scopes (separated by spaces): ")
-		if err != nil {
-			return err
-		}
+		app.AccessToken = prompt.Plain("AccessToken: ")
+		app.RefreshToken = prompt.Plain("RefreshToken: ")
+		app.TokenType = prompt.Plain("TokenType: ")
+		app.AuthState = prompt.Plain("AuthState: ")
+		app.AuthCode = prompt.Plain("AuthCode: ")
+		scopes := prompt.Plain("Scopes (separated by spaces): ")
 		if scopes != "" {
 			app.Scopes = []string{}
 			for _, scope := range strings.Split(scopes, " ") {

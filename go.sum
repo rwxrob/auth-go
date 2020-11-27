@@ -125,6 +125,8 @@ gitlab.com/rwxrob/prompt v0.0.0-20201124153608-8a2ac48f14a8 h1:y5Xi3a8nVdXCXZYnB
 gitlab.com/rwxrob/prompt v0.0.0-20201124153608-8a2ac48f14a8/go.mod h1:ns8HihniYoS/5EEcMILYZ02NhZ7BoZjKuce1onx9IBU=
 gitlab.com/rwxrob/prompt v0.0.0-20201124154414-94b6e8cbcff7 h1:kdJpFcYXE+bbeYcXjnZJUclkGkiYJWhNM/BGOFl6BXQ=
 gitlab.com/rwxrob/prompt v0.0.0-20201124154414-94b6e8cbcff7/go.mod h1:ns8HihniYoS/5EEcMILYZ02NhZ7BoZjKuce1onx9IBU=
+gitlab.com/rwxrob/prompt v0.0.0-20201126183944-b39bf4a7c8c4 h1:wxnG/ymlNXnD3NLsXDyPUFQm57/FX7kMjI1ijoD7/04=
+gitlab.com/rwxrob/prompt v0.0.0-20201126183944-b39bf4a7c8c4/go.mod h1:ns8HihniYoS/5EEcMILYZ02NhZ7BoZjKuce1onx9IBU=
 gitlab.com/rwxrob/uniq v0.0.0-20200325203910-f771e6779384 h1:G4KyltckiX3RGpI7qKOw7ElveVrl4N7MCCBFdpuTn2s=
 gitlab.com/rwxrob/uniq v0.0.0-20200325203910-f771e6779384/go.mod h1:LAjaH94onlcl6dae5PmBpX5YqO8zeqeaJy52g5gRKYE=
 go.opencensus.io v0.21.0/go.mod h1:mSImk1erAIZhrmZN+AvHh14ztQfjbGwt4TtuofqLduU=

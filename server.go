@@ -101,8 +101,9 @@ func HandleRedirect(w http.ResponseWriter, req *http.Request) {
 // redirects from Authorize. The same server is used for everything that
 // requires one in this package so care has been taken to ensure
 // requests are handled such that they are safe for concurrency.  The
-// hard coded to the address localhost:8080 (and not :8080 which would
-// expose the server to other external interfaces).
+// server is currently hard coded to the address localhost:8080 (and not
+// :8080 which would expose the server to other external interfaces).
+// Only the /redirected route is currently supported.
 func StartLocalServer() error {
 	http.HandleFunc("/redirected", HandleRedirect)
 	addr := "localhost:8080"
