@@ -65,9 +65,10 @@ func Use(name string) (Config, *App, error) {
 	}
 	err = app.Refresh()
 	if err == nil {
+		config.Store()
 		return config, app, nil
 	}
-	err = Grant(app)
+	err = Grant(app) // includes config.Store
 	return config, app, nil
 }
 
@@ -150,7 +151,7 @@ func Grant(this interface{}) error {
 	}
 	exp := a.Expiry
 
-	// start server and send app to it for caching
+	// start server and redirect app to it to get auth code
 	AddSession(a)
 	StartLocalServer()
 

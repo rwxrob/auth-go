@@ -86,6 +86,16 @@ func (a App) RedirectHost() string {
 	return url.Host
 }
 
+/*
+// Revoke follows the RFC 7009 for revoking an access or refresh token.
+func (a *App) Revoke() error {
+	ctx := context.Background
+	client := a.Client(ctx, a)
+	// TODO
+	return nil
+}
+*/
+
 // RefreshNow submits the refresh_token grant request to the app.TokenURL.
 func (a *App) RefreshNow() error {
 	ts := a.TokenSource(oauth2.NoContext, &a.Token)
