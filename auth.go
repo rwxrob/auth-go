@@ -68,7 +68,11 @@ func Use(name string) (Config, *App, error) {
 		config.Store()
 		return config, app, nil
 	}
-	err = Grant(app) // includes config.Store
+	err = Grant(app)
+	if err != nil {
+		return nil, nil, err
+	}
+	config.Store()
 	return config, app, nil
 }
 
@@ -137,7 +141,8 @@ func OpenResource(res string) error {
 // Grant runs through the Oauth2 authorization code grant flow avoiding
 // interactive user input when possible by starting up a local HTTP
 // server (or using the one that has already been started) to capture
-// the incoming redirected data.
+// the incoming redirected data. Remember to Store after a Grant if
+// needed.
 func Grant(this interface{}) error {
 	var a *App
 	config, err := OpenConfig()
@@ -175,6 +180,5 @@ func Grant(this interface{}) error {
 		}
 		time.Sleep(300 * time.Millisecond)
 	}
-
-	return config.Store()
+	return nil
 }
