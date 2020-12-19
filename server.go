@@ -19,7 +19,7 @@ var sessions = struct {
 // AddSession adds an authorization session for the given app to the
 // internal sessions map for the package. SetAuthState() is called on
 // the App and the state is used internally as the unique key for the
-// session. Safe for concurrency through use of full sync.Mutex.
+// session. Safe for concurrency through use of sync.RWMutex.
 func AddSession(a *App) {
 	defer sessions.Unlock()
 	sessions.Lock()
@@ -30,8 +30,8 @@ func AddSession(a *App) {
 // GetSession returns a session from the internal map cache if found,
 // otherwise nil.
 func GetSession(state string) *App {
-	//	defer sessions.RUnlock()
-	//	sessions.RLock()
+	defer sessions.RUnlock()
+	sessions.RLock()
 	if v, has := sessions.d[state]; has {
 		return v
 	}

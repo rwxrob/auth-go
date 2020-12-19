@@ -171,7 +171,7 @@ func Grant(this interface{}) error {
 		return nil
 	}
 
-	// wait for redirect data update the app
+	// wait for redirect data to update the app in other goroutine
 	fmt.Println("Wait for authorization to complete.")
 	fmt.Println("(Cancel with Ctrl-C if necessary.)")
 	for {
@@ -180,5 +180,6 @@ func Grant(this interface{}) error {
 		}
 		time.Sleep(300 * time.Millisecond)
 	}
+	config.Store()
 	return nil
 }
