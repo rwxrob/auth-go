@@ -1,5 +1,7 @@
 # Go Oauth2 Helper Module
 
+*Canonical source at <https://gitlab.com/rwxrob/auth>*
+
 ![Oauth2 Session](doc/session.gif)
 
 [![GoDoc](https://godoc.org/gitlab.com/rwxrob/auth?status.svg)](https://godoc.org/gitlab.com/rwxrob/auth)
@@ -15,6 +17,7 @@ from shell scripts and other command line utilities.
 ### Main
 
 ```
+auth <name>
 auth token <name>
 auth grant <name>
 auth refresh <name>
