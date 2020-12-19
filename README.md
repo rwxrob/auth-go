@@ -58,7 +58,7 @@ auth get style <name>
 ### Embed
 
 ```
-curl -H "Authorization: Bearer $(auth token <name>)" https://api.example.com/some
+curl -H "Authorization: Bearer $(auth <name>)" https://api.example.com/some
 ```
 
 The `auth` command can be used in place of sensitive token and other
@@ -68,8 +68,11 @@ the opening of a local graphical web browser automatically. The level of
 interaction can be isolated for scripts that must run without blocking
 on waits for interactivity.
 
-By default, if a token of the given type is not cached or has expired
-the user is prompted to authorize a new one.
+Unlike many other authorization solutions, `auth` starts a local web
+server to handle the redirection and safely intercept the token that was
+upgraded from the authorization code. Other tools generally prompt for
+this to be cut and pasted in. If the opening of the web browser fails, a
+prompt is shown instead.
 
 ## TODO
 

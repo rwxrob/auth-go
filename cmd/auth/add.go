@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"strconv"
 	"strings"
 
@@ -30,7 +31,6 @@ func init() {
 		app.Name = prompt.Until("Name (required): ")
 		app.ClientID = prompt.Plain("ClientID: ")
 		app.ClientSecret = prompt.Plain("ClientSecret: ")
-		app.RedirectURL = prompt.Plain("RedirectURL: ")
 		app.Endpoint.AuthURL = prompt.Plain("AuthURL: ")
 		app.Endpoint.TokenURL = prompt.Plain("TokenURL: ")
 		style := prompt.Plain("AuthStyle: ")
@@ -48,6 +48,8 @@ func init() {
 				app.Scopes = append(app.Scopes, scope)
 			}
 		}
+		app.RedirectURL = "http://localhost:8080/redirected"
+		fmt.Println("Remember to add expected redirect URL:\n  " + app.RedirectURL)
 		conf[app.Name] = app
 		conf.Store()
 		return nil
