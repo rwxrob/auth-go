@@ -1,8 +1,8 @@
 package main
 
 import (
-	"gitlab.com/rwxrob/auth"
-	"gitlab.com/rwxrob/cmdtab"
+	"github.com/rwxrob/auth"
+	"github.com/rwxrob/cmdtab"
 )
 
 func init() {

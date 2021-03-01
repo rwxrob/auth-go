@@ -1,13 +1,14 @@
 # Go Oauth2 Helper Module
 
-*Canonical source at <https://gitlab.com/rwxrob/auth>*
+*Canonical source at <https://github.com/rwxrob/auth>*
 
 ![Oauth2 Session](doc/session.gif)
 
-[![GoDoc](https://godoc.org/gitlab.com/rwxrob/auth?status.svg)](https://godoc.org/gitlab.com/rwxrob/auth)
+[![GoDoc](https://godoc.org/github.com/rwxrob/auth?status.svg)](https://godoc.org/github.com/rwxrob/auth)
 [![License](https://img.shields.io/badge/license-Apache-brightgreen.svg)](LICENSE)
-[![Go Report Card](https://goreportcard.com/badge/gitlab.com/rwxrob/auth)](https://goreportcard.com/report/gitlab.com/rwxrob/auth)
-[![Coverage](https://gocover.io/_badge/gitlab.com/rwxrob/auth)](https://gocover.io/gitlab.com/rwxrob/auth)
+[![Go Report
+Card](https://goreportcard.com/badge/github.com/rwxrob/auth)](https://goreportcard.com/report/github.com/rwxrob/auth)
+[![Coverage](https://gocover.io/_badge/github.com/rwxrob/auth)](https://gocover.io/github.com/rwxrob/auth)
 
 Designed to help make command line Oauth2 easier to implement and use
 from shell scripts and other command line utilities.

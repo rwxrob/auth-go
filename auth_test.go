@@ -10,3 +10,6 @@ func TestValid(t *testing.T) {
 	os.Setenv("AUTHCONF", "testdata/auth.json")
 	// TODO not yet expired
 }
+
+func TestValid(t *testing.T) {
+}

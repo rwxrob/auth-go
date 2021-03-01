@@ -1,12 +1,10 @@
-module gitlab.com/rwxrob/auth
+module github.com/rwxrob/auth
 
 go 1.15
 
 require (
-	gitlab.com/rwxrob/cmdtab v0.0.0-20201126001725-0125e9a6cf61
-	gitlab.com/rwxrob/prompt v0.0.0-20201126183944-b39bf4a7c8c4
-	gitlab.com/rwxrob/uniq v0.0.0-20200325203910-f771e6779384
-	golang.org/x/oauth2 v0.0.0-20201109201403-9fd604954f58
-	golang.org/x/term v0.0.0-20201117132131-f5c789dd3221
-	golang.org/x/tools v0.0.0-20201121010211-780cb80bd7fb // indirect
+	github.com/rwxrob/cmdtab v0.4.0
+	github.com/rwxrob/prompt v1.0.1
+	github.com/rwxrob/uniq v0.0.0-20200114060745-687e745ea3b7
+	golang.org/x/oauth2 v0.0.0-20210220000619-9bb904979d93
 )

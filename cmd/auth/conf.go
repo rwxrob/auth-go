@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"gitlab.com/rwxrob/cmdtab"
+	"github.com/rwxrob/cmdtab"
 )
 
 func init() {
