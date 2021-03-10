@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"sync"
 
-	"github.com/rwxrob/uniq"
+	"github.com/rwxrob/uniq-go"
 	"golang.org/x/oauth2"
 )
 

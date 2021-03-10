@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/rwxrob/auth"
+	"github.com/rwxrob/auth-go"
 	"github.com/rwxrob/cmdtab"
 )
 

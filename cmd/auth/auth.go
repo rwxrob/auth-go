@@ -12,7 +12,7 @@ func init() {
 	x.Summary = `use and manage cached oauth2 and other authorizations`
 	x.Version = "1.0.0"
 	x.Author = "Rob Muhlestein <rwx@robs.io> (rwxrob.live)"
-	x.Git = "github.com/rwxrob/auth/cmd/auth"
+	x.Git = "github.com/rwxrob/auth-go/cmd/auth"
 	x.Copyright = "(c) Rob Muhlestein"
 	x.License = "Apache-2.0"
 

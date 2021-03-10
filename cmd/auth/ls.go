@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/rwxrob/auth"
+	"github.com/rwxrob/auth-go"
 	"github.com/rwxrob/cmdtab"
 )
 

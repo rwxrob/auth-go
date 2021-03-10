@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/rwxrob/auth"
+	"github.com/rwxrob/auth-go"
 	"github.com/rwxrob/cmdtab"
 	"github.com/rwxrob/prompt"
 	"golang.org/x/oauth2"

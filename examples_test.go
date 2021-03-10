@@ -3,7 +3,7 @@ package auth_test
 import (
 	"fmt"
 
-	"github.com/rwxrob/auth"
+	"github.com/rwxrob/auth-go"
 )
 
 func ExampleLookup() {
