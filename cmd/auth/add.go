@@ -7,7 +7,7 @@ import (
 
 	"github.com/rwxrob/auth-go"
 	"github.com/rwxrob/cmdtab"
-	"github.com/rwxrob/prompt"
+	"github.com/rwxrob/prompt-go"
 	"golang.org/x/oauth2"
 )
 

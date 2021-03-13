@@ -8,7 +8,7 @@ import (
 	"runtime"
 	"time"
 
-	"github.com/rwxrob/prompt"
+	"github.com/rwxrob/prompt-go"
 	"golang.org/x/oauth2"
 )
 
